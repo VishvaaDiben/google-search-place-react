@@ -23,3 +23,6 @@ A client side React app that make calls to google places api and server side Spr
 ![screenshot-1](https://github.com/user-attachments/assets/d6c003bf-8963-4109-939e-355f8aff94fe)
 ![screenshot-2](https://github.com/user-attachments/assets/844aeeeb-1ca0-4460-a31b-3970f29d6f73)
 
+### Todo
+Deploy to hosting server
+
