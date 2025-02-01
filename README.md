@@ -3,7 +3,7 @@
 ## Instruction
 
 ### Clone the app locally and npm install
-
+Add google places api key from Google Console
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Project Description 
