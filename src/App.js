@@ -1,20 +1,22 @@
+import "./App.css";
+
 import {
   Alert,
   Box,
-  Button,
   Container,
+  IconButton,
   Paper,
   Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { addPlace, saveFavorite, setSelectedPlace } from "./redux/actions";
 
 import FavoriteDetails from "./components/FavoriteDetails";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoritesPage from "./components/FavoritesPage";
 import { GOOGLE_MAPS_API_URL } from "./apiRoutes";
 import MapComponent from "./components/MapComponent";
@@ -29,21 +31,21 @@ const App = () => {
   );
   const [query, setQuery] = useState("");
   const [alert, setAlert] = useState({ open: false, message: "" });
+  const [animated, setAnimated] = useState(false);
 
   const handleSaveFavorite = () => {
-    const isDuplicate = favoritePlaces.content.some(
+    const isDuplicate = favoritePlaces?.content?.some(
       (place) => place.placeId === selectedPlace.placeId
     );
 
     if (isDuplicate) {
-      setAlert({
-        open: true,
-        message:
-          "This place is already in favorites. Please select another place.",
-      });
+      setAlert({ open: true, message: "This place is already in favorites." });
     } else {
       dispatch(saveFavorite(selectedPlace));
+      setAlert({ open: true, message: "Place saved successfully!" });
     }
+    setAnimated(true);
+    setTimeout(() => setAnimated(false), 300);
   };
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const App = () => {
   return (
     <Container>
       <Paper elevation={3} className="p-4">
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom className="title">
           Google Place Autocomplete
         </Typography>
         <TextField
@@ -75,12 +77,14 @@ const App = () => {
           margin="normal"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          className="search-field"
         />
 
         <Box display="flex" gap={4} mt={2}>
           <SearchHistory
             history={history}
             onSelectPlace={(place) => dispatch(setSelectedPlace(place))}
+            className="history-list"
           />
           <Box flexGrow={1} height="400px">
             <MapContainer
@@ -100,27 +104,35 @@ const App = () => {
 
         {selectedPlace && (
           <Box display="flex" alignItems="center" gap={2} mt={2}>
-            <Button
-              variant="contained"
-              color="primary"
+            <IconButton
+              className={`favorite-btn ${animated ? "animated" : ""}`}
               onClick={handleSaveFavorite}
+              color="default"
             >
-              Save as Favorite
-            </Button>
+              <FavoriteIcon />
+            </IconButton>
+            <Typography className="details-label">Click to save as favourite </Typography>
             <Snackbar
               open={alert.open}
               autoHideDuration={3000}
               onClose={() => setAlert({ open: false, message: "" })}
               anchorOrigin={{ vertical: "center", horizontal: "right" }}
             >
-              <Alert severity="warning">{alert.message}</Alert>
+              <Alert
+                severity={
+                  alert.message.includes("already") ? "warning" : "success"
+                }
+              >
+                {alert.message}
+              </Alert>
             </Snackbar>
           </Box>
         )}
       </Paper>
       <FavoriteDetails />
-
-      <FavoritesPage />
+      <div className="favorites-list">
+        <FavoritesPage />
+      </div>
     </Container>
   );
 };

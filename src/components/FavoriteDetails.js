@@ -7,7 +7,7 @@ import { fetchPlaceDetails } from "../redux/actions";
 const FavoriteDetails = () => {
   const dispatch = useDispatch();
   const { selectedPlace, placeDetails } = useSelector((state) => state);
-  const { editorial_summary, formatted_address, icon, rating } =
+  const { editorial_summary, icon, rating } =
     placeDetails?.result || {};
 
   useEffect(() => {
