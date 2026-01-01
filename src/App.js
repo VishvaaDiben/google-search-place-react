@@ -22,6 +22,7 @@ import { GOOGLE_MAPS_API_URL } from "./apiRoutes";
 import MapComponent from "./components/MapComponent";
 import SearchHistory from "./components/SearchHistory";
 import store from "./redux/store";
+import { useBackendAutocomplete } from "./hooks/useBackendAutocomplete ";
 import { useGoogleAutocomplete } from "./hooks/useGoogleAutocomplete";
 
 const App = () => {
@@ -63,6 +64,9 @@ const App = () => {
     dispatch(setSelectedPlace(place));
   });
 
+
+  // const { results, loading } = useBackendAutocomplete(query);
+  
   return (
     <Container>
       <Paper elevation={3} className="p-4">
